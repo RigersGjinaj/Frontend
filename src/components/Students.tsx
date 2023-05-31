@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import StudentiIns from "./StudentIns";
 
 interface props {
   id: number;
@@ -8,18 +9,22 @@ function Students({ id }: props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showIns, setIns] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/cm/students/`)
       .then((response) => response.json())
       .then((actualData) => {
-        setData(actualData.records);
-        setData(data.filter((obj: any) => obj.class_id == id));
+        setData(actualData.records.filter((obj: any) => obj.class_id == id));
       })
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }, [id]);
+
+  function visualizza() {
+    setIns(true);
+  }
   return (
     <>
       <h1>Studenti</h1>
@@ -50,6 +55,8 @@ function Students({ id }: props) {
             );
           })}
       </table>
+      <button onClick={() => visualizza()}>Inserisci</button>
+      {showIns && <StudentiIns idClasse={id}></StudentiIns>}
     </>
   );
 }

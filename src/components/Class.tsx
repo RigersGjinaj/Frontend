@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import Students from "./Students";
+import "./class.css";
 function Class() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showStudents, setStudents] = useState(false);
+  const [idS, setIdS] = useState(0);
 
   useEffect(() => {
     fetch(`http://localhost:8080/cm/class/`)
@@ -17,11 +20,12 @@ function Class() {
   }, []);
 
   function studenti(id: number) {
-    <Students id={id}></Students>;
+    setIdS(id);
+    setStudents(true);
   }
   return (
     <>
-      <h1>Studenti</h1>
+      <h1>Classi</h1>
       <table>
         <tr>
           <th>Id</th>
@@ -44,6 +48,7 @@ function Class() {
             );
           })}
       </table>
+      {showStudents && <Students id={idS}></Students>}
     </>
   );
 }
